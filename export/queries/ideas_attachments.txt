@@ -1,0 +1,4 @@
+MyQUERY="SELECT f.filepath FROM idea_file idf
+INNER JOIN ideas i ON i.id = idf.idea_id
+INNER JOIN files f ON f.id = idf.file_id
+WHERE i.group_id IN (${ORG_ID});"

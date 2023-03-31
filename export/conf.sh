@@ -1,0 +1,4 @@
+MyDB=
+MyUSER=
+MyPSWD=''
+MyHOST=

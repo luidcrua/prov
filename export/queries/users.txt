@@ -1,0 +1,19 @@
+MyQUERY="SELECT 
+	u.id AS 'external id',
+	u.email,
+	p.first_name AS 'first name', 
+	p.last_name AS 'last name', 
+	p.employer AS 'Employer', 
+	p.city AS 'City',
+	p.job_title AS 'Job Title'
+FROM ideadrop_p1.users AS u
+INNER JOIN ideadrop_p1.profiles p ON p.user_id = u.id
+WHERE u.id IN
+(
+	SELECT DISTINCT gm.user_id
+	FROM ideadrop_p1.group_memberships AS gm
+	INNER JOIN ideadrop_p1.groups g ON g.id = gm.group_id
+	WHERE g.id IN (${ORG_ID}) OR g.parent_id IN (${ORG_ID})
+) 
+AND u.disabled = 0
+ORDER BY u.id;"

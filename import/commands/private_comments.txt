@@ -1,0 +1,2 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m migrations.ideadrop.import_private_comments -d ${DOMAIN} --file-name ${EXCEL_PATH}private_comments.xlsx --channel-name ${PRIVATE_CHANNEL_NAME} -p ${DO_IT}
+"

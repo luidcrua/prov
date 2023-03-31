@@ -1,0 +1,1 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m load_custom_form -d hisjacobs.wazoku.com jacobs.wazoku.com --dont-force-fill-profile USER_EDIT_FORM ${DO_IT}"

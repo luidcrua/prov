@@ -1,0 +1,1 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m migrations.ideadrop.import_idea_ratings -d ${DOMAIN}  --file-name ${EXCEL_PATH}ratings.xlsx -p ${DO_IT}"

@@ -1,0 +1,1 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m data_management.add_users_to_community_from_list -d ${DOMAIN} --file-name ${EXCEL_PATH}users.xlsx --print-existing-users --send-invites admin@wazoku.com --external-id --elude-hsbc-check ${STAGING}"

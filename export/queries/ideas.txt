@@ -1,0 +1,34 @@
+MyQUERY="SELECT 
+	i.id AS internal_name,
+	i.title AS name,
+	i.created_at AS date_created,
+	i.description AS 'Description',
+	u.email AS creator_email,
+	cs.name AS stage,
+	i.delete_request AS status,
+	(
+		SELECT GROUP_CONCAT(f.filepath)
+		FROM idea_file i_f
+		LEFT JOIN files f
+		ON f.id = i_f.file_id
+		WHERE i_f.idea_id = i.id
+	) AS attachments,
+	(
+		SELECT GROUP_CONCAT(u.email)
+		FROM assignees a
+		LEFT JOIN users u
+		ON u.id = a.user_id
+		WHERE a.idea_id = i.id
+	) AS team_member_emails
+FROM ideadrop_p1.ideas AS i
+INNER JOIN ideadrop_p1.users u 
+ON u.id = i.author_id
+LEFT JOIN ideadrop_p1.content_status cs
+ON cs.id = i.status  
+WHERE i.group_id IN
+(
+	SELECT DISTINCT g.id
+	FROM ideadrop_p1.groups g
+	WHERE g.id IN (${ORG_ID}) OR g.parent_id IN (${ORG_ID})
+)
+ORDER BY i.id;"
