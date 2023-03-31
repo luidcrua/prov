@@ -1,6 +1,11 @@
 #!/bin/bash
 DATET=$(date +%y%m%d%H%M%S)
 
+BASE_DIR=$(dirname "$0")
+
+ls -lh "${BASE_DIR}/../../../../../"
+exit 0
+
 # Params
 # Domain(s)
 # Path
@@ -16,6 +21,7 @@ do
 		e) ENTITY=${OPTARG};;
 		i) INVITES=${OPTARG};;
 		c) CHALLENGE_ID=${OPTARG};;
+		l) LOCAL=${OPTARG};;
         \?) echo "Invalid option $OPTARG" >&2
         exit 1
         ;;
@@ -29,9 +35,12 @@ if [ -z ${DOMAIN} ]; then
 fi
 
 if [ -z ${EXCEL_PATH} ]; then
-	# There's no Path for excel files
-	echo "***** Missing argument -p: Path for Excel files"
-	exit 0
+	EXCEL_PATH="${BASE_DIR}/../export/output"
+	if [ ! -d "${EXCEL_PATH}" ]; then
+		# Path doesn't exist
+		echo "***** Directory ${EXCEL_PATH} DOES NOT exist." 
+		exit 0
+	fi
 else
 	if [ ! -d "${EXCEL_PATH}" ]; then
 		# Path doesn't exist
@@ -58,10 +67,10 @@ fi
 
 if [ -z ${ENTITY} ]; then
 	# All entities required
-	ENTITIES="entities/wholeEntities"
+	ENTITIES="${BASE_DIR}/entities/wholeEntities"
 else
 	# There's a specific entity
-	ENTITIES="entities/onlyEntity"
+	ENTITIES="${BASE_DIR}/entities/onlyEntity"
 	# In case of wanting to import users, needs to import Form
 	if [[ "${ENTITY}" == "users" ]]; then
 		echo "user_form" > $ENTITIES
@@ -87,6 +96,14 @@ else
 	CHALLENGE_ID=" --challenge-id ${CHALLENGE_ID}"
 fi
 
+if [ -z ${LOCAL} ]; then
+	# Not running in local environment
+	LOCAL="server"
+else
+	# It's running in local environment
+	LOCAL="local"
+fi
+
 PRIVATE_CHANNEL_NAME='Managers'
 
 # Scripts to handle:
@@ -100,8 +117,8 @@ PRIVATE_CHANNEL_NAME='Managers'
 while read line; do
 	echo "=== IMPORTING.... ${line}"
 	# search for command file
-	COMMFILE="commands/${line}.txt"
-	if test -f "$COMMFILE"; then
+	COMMFILE="${BASE_DIR}/commands/${LOCAL}/${line}.txt"
+	if test -f "${COMMFILE}"; then
 		if [[ "${line}" != "user_form" ]]; then
 			# check for excel file to exist, avoid user_form which doesn't need an excel file
 			if ! test -f "${EXCEL_PATH}${line}.xlsx"; then

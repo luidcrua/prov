@@ -1,0 +1,1 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m migrations.gore.import_ideas -d ${DOMAIN} --stage-json /tmp/stage-challenge-general.json --file-name ${EXCEL_PATH}ideas.xlsx --challenge-id 3eddfdcd4a2a480a96c599393e3fb43c ${STAGING} ${DO_IT}"

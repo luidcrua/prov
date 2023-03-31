@@ -1,7 +1,9 @@
 #!/bin/bash
 DATET=$(date +%y%m%d%H%M%S)
 
-source conf.sh
+BASE_DIR=$(dirname "$0")
+
+source $BASE_DIR/conf.sh
 
 # Params
 # ID organisation id
@@ -27,10 +29,10 @@ fi
 
 if [ -z ${ENTITY} ]; then
 	# All entities required
-	ENTITIES="entities/wholeEntities"
+	ENTITIES="${BASE_DIR}/entities/wholeEntities"
 else
 	# There's a specific entity
-	ENTITIES="entities/onlyEntity"
+	ENTITIES="${BASE_DIR}/entities/onlyEntity"
 	echo $ENTITY > $ENTITIES
 fi
 
@@ -54,22 +56,22 @@ echo $DATET
 while read line; do
 	echo "=== EXPORTING.... ${line}"
 	# search for query file
-	QUERYFILE="queries/${line}.txt"
-	if test -f "$QUERYFILE"; then
-		echo "$QUERYFILE exists."
+	QUERYFILE="${BASE_DIR}/queries/${line}.txt"
+	if test -f "${QUERYFILE}"; then
+		echo "${QUERYFILE} exists."
 		if [[ "${line}" == *"attachments"* ]]; then
 			SKIP_COL=" --skip-column-names"
 		fi
 
 		source $QUERYFILE
 
-		OUTPUTFILE="output/${line}.csv"
-		XLSFILE="output/${line}.xlsx"
+		OUTPUTFILE="${BASE_DIR}/output/${line}.csv"
+		XLSFILE="${BASE_DIR}/output/${line}.xlsx"
 
 		# >
 		# <
 		#MyCOMM="mysql -u $MyUSER -p$MyPSWD -h $MyHOST $MyDB -e \"${MyQUERY}\" -B --skip-column-names > ${OUTPUTFILE}"
-		MyCOMM="mysql -u $MyUSER -p$MyPSWD -h $MyHOST $MyDB -e \"${MyQUERY}\" -B ${SKIP_COL} | sed 's/\"/\"\"/g;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\x0b//g' > ${OUTPUTFILE}"
+		MyCOMM="mysql -u ${MyUSER} -p${MyPSWD} -h ${MyHOST} ${MyDB} -e \"${MyQUERY}\" -B ${SKIP_COL} | sed 's/\"/\"\"/g;s/\t/\",\"/g;s/^/\"/;s/$/\"/;s/\x0b//g' > ${OUTPUTFILE}"
 
 		eval $MyCOMM
 		# Convert to XLS

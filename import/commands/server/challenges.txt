@@ -1,0 +1,1 @@
+PyCOMM="PYTHONPATH=/usr/local/wazoku/spotlight-scripts DJANGO_SETTINGS_MODULE=conf.settings /usr/local/wazoku/spotlight-scripts/bin/python -m migrations.ideadrop.import_challenges -d ${DOMAIN} --store-titles --file-name ${EXCEL_PATH}challenges.xlsx ${STAGING} -p ${DO_IT}"
